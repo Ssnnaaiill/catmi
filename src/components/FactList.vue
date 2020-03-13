@@ -8,6 +8,14 @@
           <code>cats</code> !
         </div>
       </div>
+      <b-pagination
+        :total="factList.length"
+        :current.sync="current"
+        order="is-centered"
+        simple
+        rounded
+        per-page="20"
+      ></b-pagination>
       <div class="fact-container">
         <div
           class="card"
@@ -41,10 +49,6 @@
         simple
         rounded
         per-page="20"
-        aria-next-label="Next page"
-        aria-previous-label="Previous page"
-        aria-page-label="Page"
-        aria-current-label="Current page"
       ></b-pagination>
     </div>
     <div class="loading" v-else>
@@ -111,8 +115,10 @@ a {
 }
 
 .container {
-  margin-top: 2rem;
+  margin-top: 5.5rem;
+  margin-bottom: 3.4rem;
 }
+
 .fact-container {
   display: flex;
   flex-wrap: wrap;
@@ -162,5 +168,9 @@ a {
   margin-top: 16rem;
   opacity: 1;
   animation: loading 2s infinite;
+}
+
+.pagination {
+  margin-bottom: 30px;
 }
 </style>
