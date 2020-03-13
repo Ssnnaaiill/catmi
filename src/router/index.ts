@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Facts from "../views/Facts.vue";
+import BreedMap from "../views/BreedMap.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
     path: "/facts",
     name: "Facts",
     component: Facts
+  },
+  {
+    path: "/map",
+    name: "Map",
+    component: BreedMap
   },
   {
     path: "/about",
