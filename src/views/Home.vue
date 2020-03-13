@@ -1,16 +1,5 @@
 <template>
-  <div class="home">
-    <Facts />
+  <div class="about">
+    <h1>This is a main page</h1>
   </div>
 </template>
-
-<script>
-import Facts from "@/components/Facts.vue";
-
-export default {
-  name: "Home",
-  components: {
-    Facts,
-  },
-};
-</script>
