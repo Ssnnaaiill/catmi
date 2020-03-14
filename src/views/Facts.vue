@@ -8,7 +8,7 @@
 import FactList from "@/components/FactList.vue";
 
 export default {
-  name: "Home",
+  name: "Facts",
   components: {
     FactList,
   },

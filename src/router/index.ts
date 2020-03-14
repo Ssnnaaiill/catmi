@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Facts from "../views/Facts.vue";
 import BreedMap from "../views/BreedMap.vue";
 
 Vue.use(VueRouter);
@@ -10,12 +9,12 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: Home
   },
   {
     path: "/facts",
     name: "Facts",
-    component: Facts
+    component: () => import("../views/Facts.vue")
   },
   {
     path: "/map",
@@ -28,14 +27,14 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  },
+    component: () => import(/* webpackChunkName: "about" */ "../views/About.vue")
+  }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;
