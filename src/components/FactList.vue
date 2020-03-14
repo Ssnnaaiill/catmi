@@ -4,8 +4,8 @@
       <div class="container">
         <div class="notification">
           Enjoy exploring
-          <strong>{{ factList.length }} fun facts</strong> about
-          <code>cats</code> !
+          <strong>{{ factList.length }} fun facts</strong>
+          about <code>cats</code> !
         </div>
       </div>
       <b-pagination
@@ -32,9 +32,9 @@
             <div class="card-footer-item" v-if="fact._id">
               <div>
                 <b-icon pack="fas" icon="heart"></b-icon>
-                <span>{{fact.upvotes}}</span>
+                <span>{{ fact.upvotes }}</span>
               </div>
-              <a v-if="fact.user">{{fact.user.name.first}} {{fact.user.name.last}}</a>
+              <a v-if="fact.user">{{ fact.user.name.first }} {{ fact.user.name.last }}</a>
             </div>
             <div class="card-footer-item" v-else>
               <code>catfact.ninja</code>
@@ -52,9 +52,7 @@
       ></b-pagination>
     </div>
     <div class="loading" v-else>
-      <strong>
-        <em>Loading...</em>🐾
-      </strong>
+      <strong> <em>Loading...</em>🐾 </strong>
     </div>
   </div>
 </template>
@@ -83,15 +81,13 @@ export default class Facts extends Vue {
           }
         }
       });
-    await axios
-      .get("https://catfact.ninja/facts?limit=333")
-      .then((res: any) => {
-        for (const i in res.data) {
-          if (res.data[i]) {
-            this.factList.push(res.data[i]);
-          }
+    await axios.get("https://catfact.ninja/facts?limit=999").then((res: any) => {
+      for (const i in res.data) {
+        if (res.data[i]) {
+          this.factList.push(res.data[i]);
         }
-      });
+      }
+    });
     this.factList = this.factList[0].concat(this.factList[2]);
   }
 
@@ -150,24 +146,6 @@ a {
       }
     }
   }
-
-  @keyframes loading {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.1;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-}
-
-.loading {
-  margin-top: 16rem;
-  opacity: 1;
-  animation: loading 2s infinite;
 }
 
 .pagination {

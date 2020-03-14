@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import BreedMap from "../views/BreedMap.vue";
+import Breeds from "../views/Breeds.vue";
 
 Vue.use(VueRouter);
 
@@ -17,9 +17,9 @@ const routes = [
     component: () => import("../views/Facts.vue")
   },
   {
-    path: "/map",
-    name: "Map",
-    component: BreedMap
+    path: "/breeds",
+    name: "Breeds",
+    component: Breeds
   },
   {
     path: "/about",
