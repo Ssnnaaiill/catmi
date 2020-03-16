@@ -18,7 +18,8 @@
         <b-navbar-item tag="div">
           <div class="buttons">
             <a class="button is-primary" href="https://github.com/Ssnnaaiill/catmi" target="_blank">
-              <b-icon pack="fab" icon="github"></b-icon><strong>Github</strong>
+              <b-icon pack="fab" icon="github"></b-icon>
+              <strong>Github</strong>
             </a>
             <a class="button is-light">Log in</a>
           </div>
@@ -70,7 +71,7 @@
 }
 
 .loading {
-  margin-top: 16rem;
+  margin: 7rem 0 2.8rem 0;
   opacity: 1;
   animation: loading 2s infinite;
 }
