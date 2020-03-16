@@ -21,6 +21,7 @@
 import axios from "axios";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import L, { geoJSON } from "leaflet";
+import * as turf from "turf";
 import Loading from "@/components/Loading.vue";
 
 @Component
@@ -67,16 +68,30 @@ export default class Breeds extends Vue {
   }
 
   private initMarkers() {
-    console.log(this.enableCountryList);
-    L.marker([63, 94])
-      .bindPopup("<p>Russia</p>")
-      .addTo(this.map);
-    L.marker([36.47, 139])
-      .bindPopup("<p>Japan</p>")
-      .addTo(this.map);
-    L.marker([35.844694, 103.452083])
-      .bindPopup("<p>China</p>")
-      .addTo(this.map);
+    let coords: any = [];
+
+    this.enableCountryList.forEach((countryName: string) => {
+      this.countryGeoJson.forEach((geo: any) => {
+        if (geo.properties.ADMIN === countryName) {
+          if (geo.geometry.coordinates.length > 1) {
+            coords = geo.geometry.coordinates[0][0];
+          } else {
+            coords = geo.geometry.coordinates[0];
+          }
+        }
+      });
+
+      const features: any = [];
+      coords.forEach((coord: any) => {
+        features.push(turf.point(coord));
+      });
+
+      const markerPoint: any = turf.center(turf.featureCollection(features))
+        .geometry.coordinates;
+      L.marker(markerPoint)
+        .bindPopup(`<p>${countryName}</p>`)
+        .addTo(this.map);
+    });
   }
 
   private async initMap() {
@@ -86,7 +101,7 @@ export default class Breeds extends Vue {
       maxZoom: 2
     });
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-      maxZoom: 5
+      maxZoom: 6
     }).addTo(this.map);
     this.map.setView(new L.LatLng(37.56, 10), 2);
 
