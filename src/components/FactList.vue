@@ -1,11 +1,12 @@
 <template>
-  <div class="facts">
+  <div class="fact-list">
     <div v-if="factList.length > 1">
       <div class="container">
         <div class="notification">
           Enjoy exploring
           <strong>{{ factList.length }} fun facts</strong>
-          about <code>cats</code> !
+          about
+          <code>cats</code> !
         </div>
       </div>
       <b-pagination
@@ -52,14 +53,16 @@
       ></b-pagination>
     </div>
     <div class="loading" v-else>
-      <strong> <em>Loading...</em>🐾 </strong>
+      <strong>
+        <em>Loading...</em>🐾
+      </strong>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import axios from "axios";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Facts extends Vue {
@@ -81,13 +84,15 @@ export default class Facts extends Vue {
           }
         }
       });
-    await axios.get("https://catfact.ninja/facts?limit=999").then((res: any) => {
-      for (const i in res.data) {
-        if (res.data[i]) {
-          this.factList.push(res.data[i]);
+    await axios
+      .get("https://catfact.ninja/facts?limit=999")
+      .then((res: any) => {
+        for (const i in res.data) {
+          if (res.data[i]) {
+            this.factList.push(res.data[i]);
+          }
         }
-      }
-    });
+      });
     this.factList = this.factList[0].concat(this.factList[2]);
   }
 
@@ -106,10 +111,6 @@ export default class Facts extends Vue {
 </script>
 
 <style scoped lang="scss">
-a {
-  color: #42b983;
-}
-
 .container {
   margin-top: 5.5rem;
   margin-bottom: 3.4rem;

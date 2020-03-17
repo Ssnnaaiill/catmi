@@ -45,8 +45,13 @@
 
 .navbar {
   position: fixed !important;
+  z-index: 5;
   top: 0;
   width: 100%;
+}
+
+a {
+  color: #42b983;
 }
 
 #nav a {
