@@ -1,10 +1,12 @@
 <template>
-  <div class="map">
+  <div class="breed-map">
     <div v-if="breedList.length > 1 && countryGeoJson.length !== 0">
       <div class="container">
         <div class="notification">
-          <strong>{{ breedList.length }} kinds</strong> of
-          <code>cats</code> all around the world!
+          Click the markers and learn about
+          <strong>{{ breedList.length }}</strong>
+          <code>cat</code>
+          <strong>breeds</strong> all around the world!
         </div>
       </div>
     </div>
@@ -14,23 +16,23 @@
       </strong>
     </div>
     <div id="map" class="container"></div>
+    <BreedList :breedList="breedList" :countryGeoJson="countryGeoJson" />
   </div>
 </template>
 
 <script lang="ts">
 import axios from "axios";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import L, { geoJSON } from "leaflet";
-import * as turf from "turf";
-import Loading from "@/components/Loading.vue";
+import { Component, Vue } from "vue-property-decorator";
+import L, { geoJSON, LatLng } from "leaflet";
+import BreedList from "@/components/BreedList.vue";
 
-@Component
+@Component({
+  components: { BreedList }
+})
 export default class Breeds extends Vue {
   private breedList: any = [];
   private countryGeoJson: any = [];
   private enableCountryList: string[] = [];
-  private map: any;
-
   private colorPalette: string[] = [
     "rgb(241, 89, 65)",
     "rgb(245, 131, 69)",
@@ -53,6 +55,29 @@ export default class Breeds extends Vue {
     "rgb(202, 87, 116)",
     "rgb(221, 88, 93)"
   ];
+  private geoCenter: any = [
+    [26, 29.5], // egypt
+    [39.5, 22], // greece
+    [40, -101], // United States of America
+    [23.5, 54.2], // United Arab Emirates
+    [-26, 132.5], // Australia
+    [46.5, 2.5], // France
+    [54, -2], // United Kingdom
+    [21.1, 96.1], // Myanmar
+    [56, -107], // Canada
+    [34.77, 32.95], // Cyprus
+    [62, 99], // Russia
+    [32, 105], // China
+    [37, 139.5], // Japan
+    [15.5, 101], // Thailand
+    [54.15, -4.63], // Isle of Man
+    [64.6, 12.2], // Norway
+    [31, 55.2], // Iran
+    [1.35, 103.8], // Singapore
+    [5, 47], // Somalia
+    [39, 36] // Turkey
+  ];
+  private map: any;
 
   private style(feature: any) {
     return {
@@ -68,28 +93,42 @@ export default class Breeds extends Vue {
   }
 
   private initMarkers() {
-    let coords: any = [];
+    const breeds: any = [];
+    for (const i in this.enableCountryList) {
+      if (this.enableCountryList[i]) {
+        breeds.push([]);
+      }
+    }
 
-    this.enableCountryList.forEach((countryName: string) => {
-      this.countryGeoJson.forEach((geo: any) => {
-        if (geo.properties.ADMIN === countryName) {
-          if (geo.geometry.coordinates.length > 1) {
-            coords = geo.geometry.coordinates[0][0];
-          } else {
-            coords = geo.geometry.coordinates[0];
-          }
+    this.breedList.forEach((breed: any) => {
+      this.enableCountryList.forEach((countryName: string) => {
+        const breedsInCountry: any = [];
+        if (breed.origin === countryName) {
+          breeds[this.enableCountryList.indexOf(countryName)].push(breed.name);
         }
       });
+    });
 
-      const features: any = [];
-      coords.forEach((coord: any) => {
-        features.push(turf.point(coord));
+    this.geoCenter.forEach((coords: any) => {
+      const breedsInCountry: string[] = [];
+      breeds[this.geoCenter.indexOf(coords)].forEach((breed: string) => {
+        breedsInCountry.push(
+          `<a id='${breed.replace(/\s/g, "")}-marker' href='#${breed.replace(
+            /\s/g,
+            ""
+          )}'>${breed}</a>`
+        );
       });
 
-      const markerPoint: any = turf.center(turf.featureCollection(features))
-        .geometry.coordinates;
-      L.marker(markerPoint)
-        .bindPopup(`<p>${countryName}</p>`)
+      L.marker([coords[0], coords[1]])
+        .bindPopup(
+          `<div>
+            <strong>${this.enableCountryList[this.geoCenter.indexOf(coords)]}
+            </strong>
+            <br/>
+            ${breedsInCountry.join(", ")}
+          </div>`
+        )
         .addTo(this.map);
     });
   }
@@ -101,7 +140,7 @@ export default class Breeds extends Vue {
       maxZoom: 2
     });
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-      maxZoom: 6
+      maxZoom: 7
     }).addTo(this.map);
     this.map.setView(new L.LatLng(37.56, 10), 2);
 
@@ -163,10 +202,6 @@ export default class Breeds extends Vue {
 </script>
 
 <style scoped lang="scss">
-a {
-  color: #42b983;
-}
-
 .container {
   margin-top: 5.5rem;
   margin-bottom: 1.8rem;
@@ -179,5 +214,6 @@ a {
 #map {
   height: 500px;
   margin: 0 auto;
+  z-index: 3;
 }
 </style>
