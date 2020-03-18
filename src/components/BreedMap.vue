@@ -16,7 +16,7 @@
       </strong>
     </div>
     <div id="map" class="container"></div>
-    <BreedList :breedList="breedList" :countryGeoJson="countryGeoJson" />
+    <BreedList :breedList="breedList" :countryGeoJson="countryGeoJson" :breedImgs="breedImgs" />
   </div>
 </template>
 
@@ -77,6 +77,7 @@ export default class Breeds extends Vue {
     [5, 47], // Somalia
     [39, 36] // Turkey
   ];
+  private breedImgs: string[] = [];
   private map: any;
 
   private style(feature: any) {
@@ -166,10 +167,12 @@ export default class Breeds extends Vue {
 
   private async getBreedList() {
     const breedCountryList: any = [];
+    const breedId: any = [];
 
     await axios.get("https://api.thecatapi.com/v1/breeds").then((res: any) => {
       res.data.forEach((data: any) => {
         this.breedList.push(data);
+        breedId.push(data.id);
         if (this.breedList[res.data.indexOf(data)].origin === "United States") {
           this.breedList[res.data.indexOf(data)].origin =
             "United States of America";
@@ -190,6 +193,18 @@ export default class Breeds extends Vue {
           this.enableCountryList.push(country);
         }
       }
+    });
+
+    breedId.forEach((id: string) => {
+      axios
+        .get(
+          `https://api.thecatapi.com/v1/images/search?order=desc&breed_id=${id}`
+        )
+        .then((res: any) => {
+          res.data.forEach((data: any) => {
+            this.breedImgs.push(data.url);
+          });
+        });
     });
 
     this.initMap();
