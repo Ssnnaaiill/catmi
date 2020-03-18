@@ -1,10 +1,11 @@
 <template>
-  <div class="facts">
+  <div class="fact-list">
     <div v-if="factList.length > 1">
       <div class="container">
         <div class="notification">
           Enjoy exploring
-          <strong>{{ factList.length }} fun facts</strong> about
+          <strong>{{ factList.length }} fun facts</strong>
+          about
           <code>cats</code> !
         </div>
       </div>
@@ -16,11 +17,12 @@
         rounded
         per-page="20"
       ></b-pagination>
-      <div class="fact-container">
+      <div class="card-container">
         <div
           class="card"
           v-for="(fact, i) in factList.slice(20 * (current - 1), 20 * current)"
           :key="i"
+          @click="showDetails(fact.text)"
         >
           <div class="card-content">
             <div class="content">
@@ -32,9 +34,10 @@
             <div class="card-footer-item" v-if="fact._id">
               <div>
                 <b-icon pack="fas" icon="heart"></b-icon>
-                <span>{{fact.upvotes}}</span>
+                <span>{{ fact.upvotes }}</span>
               </div>
-              <a v-if="fact.user">{{fact.user.name.first}} {{fact.user.name.last}}</a>
+              <code>cat-facts</code>
+              <a v-if="fact.user">{{ fact.user.name.first }} {{ fact.user.name.last }}</a>
             </div>
             <div class="card-footer-item" v-else>
               <code>catfact.ninja</code>
@@ -61,7 +64,7 @@
 
 <script lang="ts">
 import axios from "axios";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Facts extends Vue {
@@ -84,7 +87,7 @@ export default class Facts extends Vue {
         }
       });
     await axios
-      .get("https://catfact.ninja/facts?limit=333")
+      .get("https://catfact.ninja/facts?limit=999")
       .then((res: any) => {
         for (const i in res.data) {
           if (res.data[i]) {
@@ -103,6 +106,15 @@ export default class Facts extends Vue {
     }
   }
 
+  private showDetails(text: string) {
+    this.$buefy.dialog.alert({
+      title: "Cat Facts",
+      message: "　" + text,
+      ariaRole: "alertdialog",
+      ariaModal: true
+    });
+  }
+
   private mounted() {
     this.getFactList();
   }
@@ -110,64 +122,9 @@ export default class Facts extends Vue {
 </script>
 
 <style scoped lang="scss">
-a {
-  color: #42b983;
-}
-
 .container {
   margin-top: 5.5rem;
   margin-bottom: 3.4rem;
-}
-
-.fact-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 1rem 0;
-
-  .card {
-    display: flex;
-    flex-direction: column;
-    margin: 24px;
-    width: 300px;
-    min-height: 300px;
-    border-radius: 10px;
-
-    .card-content {
-      min-height: 250px;
-      display: flex;
-      align-items: center;
-      text-overflow: ellipsis;
-    }
-
-    .card-footer {
-      .card-footer-item {
-        justify-content: space-between !important;
-      }
-      .icon {
-        margin-right: 4px;
-        color: #ff3860;
-      }
-    }
-  }
-
-  @keyframes loading {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.1;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-}
-
-.loading {
-  margin-top: 16rem;
-  opacity: 1;
-  animation: loading 2s infinite;
 }
 
 .pagination {

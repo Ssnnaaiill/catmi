@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="facts">
     <FactList />
   </div>
 </template>
@@ -8,7 +8,7 @@
 import FactList from "@/components/FactList.vue";
 
 export default {
-  name: "Home",
+  name: "Facts",
   components: {
     FactList,
   },
