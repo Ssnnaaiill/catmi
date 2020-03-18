@@ -17,11 +17,12 @@
         rounded
         per-page="20"
       ></b-pagination>
-      <div class="fact-container">
+      <div class="card-container">
         <div
           class="card"
           v-for="(fact, i) in factList.slice(20 * (current - 1), 20 * current)"
           :key="i"
+          @click="showDetails(fact.text)"
         >
           <div class="card-content">
             <div class="content">
@@ -35,6 +36,7 @@
                 <b-icon pack="fas" icon="heart"></b-icon>
                 <span>{{ fact.upvotes }}</span>
               </div>
+              <code>cat-facts</code>
               <a v-if="fact.user">{{ fact.user.name.first }} {{ fact.user.name.last }}</a>
             </div>
             <div class="card-footer-item" v-else>
@@ -104,6 +106,15 @@ export default class Facts extends Vue {
     }
   }
 
+  private showDetails(text: string) {
+    this.$buefy.dialog.alert({
+      title: "Cat Facts",
+      message: "　" + text,
+      ariaRole: "alertdialog",
+      ariaModal: true
+    });
+  }
+
   private mounted() {
     this.getFactList();
   }
@@ -114,39 +125,6 @@ export default class Facts extends Vue {
 .container {
   margin-top: 5.5rem;
   margin-bottom: 3.4rem;
-}
-
-.fact-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 1rem 0;
-
-  .card {
-    display: flex;
-    flex-direction: column;
-    margin: 24px;
-    width: 300px;
-    min-height: 300px;
-    border-radius: 10px;
-
-    .card-content {
-      min-height: 250px;
-      display: flex;
-      align-items: center;
-      text-overflow: ellipsis;
-    }
-
-    .card-footer {
-      .card-footer-item {
-        justify-content: space-between !important;
-      }
-      .icon {
-        margin-right: 4px;
-        color: #ff3860;
-      }
-    }
-  }
 }
 
 .pagination {
