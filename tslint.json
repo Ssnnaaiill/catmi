@@ -23,7 +23,6 @@
       true,
       "double"
     ],
-    "no-console": false,
     "trailing-comma": false
   }
 }
