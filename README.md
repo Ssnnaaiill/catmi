@@ -1,4 +1,4 @@
-# takulist
+# catmi
 
 ## Project setup
 ```
