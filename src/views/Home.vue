@@ -1,11 +1,16 @@
 <template>
   <div class="home">
-    <h1>This is a main page</h1>
+    <RandomCat />
   </div>
 </template>
 
 <script>
+import RandomCat from "@/components/RandomCat.vue";
+
 export default {
-  name: "Home",
+  name: "Facts",
+  components: {
+    RandomCat
+  }
 };
 </script>

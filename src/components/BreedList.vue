@@ -38,31 +38,31 @@ export default class BreedList extends Vue {
   private showDetails(breed: any) {
     const tags: any = [];
     if (breed.experimental === 1) {
-      tags.push(`<code>Experimental</code>`);
+      tags.push(`<span class="tag is-warning">Experimental</span>`);
     }
     if (breed.hairless === 1) {
-      tags.push(`<code>Hairless</code>`);
+      tags.push(`<span class="tag is-warning">Hairless</span>`);
     }
     if (breed.natural === 1) {
-      tags.push(`<code>Natural Breed</code>`);
+      tags.push(`<span class="tag is-warning">Natural Breed</span>`);
     }
     if (breed.rare === 1) {
-      tags.push(`<code>Rare</code>`);
+      tags.push(`<span class="tag is-warning">Rare</span>`);
     }
     if (breed.rex === 1) {
-      tags.push(`<code>Rex</code>`);
+      tags.push(`<span class="tag is-warning">Rex</span>`);
     }
     if (breed.suppress_tail === 1) {
-      tags.push(`<code>Suppress tail</code>`);
+      tags.push(`<span class="tag is-warning">Suppress tail</span>`);
     }
     if (breed.short_legs === 1) {
-      tags.push(`<code>Short Legs</code>`);
+      tags.push(`<span class="tag is-warning">Short Legs</span>`);
     }
     if (breed.hypoallergenic === 1) {
-      tags.push(`<code>Hypoallergenic</code>`);
+      tags.push(`<span class="tag is-warning">Hypoallergenic</span>`);
     }
     breed.temperament.split(", ").forEach((temp: string) => {
-      tags.push(`<code>${temp}</code>`);
+      tags.push(`<span class="tag is-primary">${temp}</span>`);
     });
 
     const message: string = `

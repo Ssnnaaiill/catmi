@@ -9,10 +9,6 @@
       <template slot="start">
         <b-navbar-item tag="router-link" :to="{ path: '/facts' }">Facts</b-navbar-item>
         <b-navbar-item tag="router-link" :to="{ path: '/breeds' }">Breeds</b-navbar-item>
-        <b-navbar-dropdown label="Info">
-          <b-navbar-item tag="router-link" :to="{ path: '/about' }">About</b-navbar-item>
-          <b-navbar-item href="#">Contact</b-navbar-item>
-        </b-navbar-dropdown>
       </template>
       <template slot="end">
         <b-navbar-item tag="div">
@@ -21,7 +17,6 @@
               <b-icon pack="fab" icon="github"></b-icon>
               <strong>Github</strong>
             </a>
-            <a class="button is-light">Log in</a>
           </div>
         </b-navbar-item>
       </template>
